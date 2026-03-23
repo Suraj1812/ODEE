@@ -95,21 +95,31 @@ function renderStudents(students) {
   elements.studentList.innerHTML = "";
 
   if (students.length === 0) {
-    elements.studentList.innerHTML = `<div class="student-card"><p>No students in this tenant.</p></div>`;
+    elements.studentList.innerHTML = `<div class="student-empty">No students in this tenant.</div>`;
     return;
   }
 
   students.forEach((student) => {
     const article = document.createElement("article");
-    article.className = "student-card";
+    article.className = "student-row";
+    const initials = student.name
+      .split(" ")
+      .map((part) => part[0] || "")
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
     article.innerHTML = `
-      <h4>${student.name}</h4>
-      <p>${student.id}</p>
-      <div class="student-meta">
-        <span class="pill">${student.grade}</span>
-        <span class="pill">${student.learningTrack}</span>
-        <span class="pill">${student.city}</span>
+      <div class="student-primary">
+        <span class="student-avatar">${initials}</span>
+        <div class="student-copy">
+          <h4>${student.name}</h4>
+          <p>${student.id}</p>
+        </div>
       </div>
+      <span class="pill">${student.grade}</span>
+      <span class="track-text">${student.learningTrack}</span>
+      <span class="city-text">${student.city}</span>
     `;
     elements.studentList.appendChild(article);
   });

@@ -1,16 +1,17 @@
 :root {
-  --bg: #0b0f14;
-  --card: #11161d;
-  --border: #1f2933;
-  --text-primary: #e6edf3;
-  --text-secondary: #9ba3af;
-  --accent: #22c55e;
-  --accent-soft: #163d2a;
-  --danger: #ef4444;
+  --bg: #19130f;
+  --card: #221914;
+  --border: rgba(241, 185, 96, 0.18);
+  --text-primary: #f7efe5;
+  --text-secondary: #b9ab9a;
+  --accent: #f1b960;
+  --accent-soft: #3a2918;
+  --danger: #ff6b57;
   --warning: #f59e0b;
-  --card-elevated: #161c24;
-  --card-muted: #0f141b;
-  --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  --success: #8bd3a8;
+  --card-elevated: #2a1f19;
+  --card-muted: #1b1410;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
   --radius-xl: 24px;
   --radius-lg: 18px;
   --radius-md: 14px;
@@ -29,19 +30,34 @@ body {
   font-family: var(--sans);
   color: var(--text-primary);
   background:
-    radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 26%),
-    linear-gradient(180deg, #0b0f14 0%, #0e131a 100%);
+    radial-gradient(circle at top right, rgba(241, 185, 96, 0.18), transparent 22%),
+    radial-gradient(circle at bottom left, rgba(139, 211, 168, 0.08), transparent 18%),
+    linear-gradient(180deg, #140f0c 0%, #19130f 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 92%);
 }
 
 .page-shell {
-  width: min(1280px, calc(100vw - 24px));
-  margin: 12px auto 24px;
+  width: min(1280px, calc(100vw - 28px));
+  margin: 14px auto 28px;
 }
 
 .card {
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--card);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+    var(--card);
   box-shadow: var(--shadow);
 }
 
@@ -51,7 +67,7 @@ body {
 }
 
 .section-block {
-  padding: 16px;
+  padding: 18px;
 }
 
 .playground-grid {
@@ -71,10 +87,18 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(58, 41, 24, 0.45);
 }
 
 .user-field {
   max-width: 260px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(58, 41, 24, 0.35);
 }
 
 .side-panel,
@@ -97,8 +121,12 @@ body {
 .inner-card {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--card-elevated);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent),
+    var(--card-elevated);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
 .button {
@@ -107,7 +135,7 @@ body {
   justify-content: center;
   min-height: 44px;
   padding: 0 16px;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1px solid var(--border);
   cursor: pointer;
   font: inherit;
@@ -123,19 +151,19 @@ body {
 }
 
 .button-primary {
-  color: #04110a;
+  color: #1b140f;
   background: var(--accent);
-  border-color: rgba(34, 197, 94, 0.45);
-  box-shadow: 0 10px 24px rgba(34, 197, 94, 0.18);
+  border-color: rgba(241, 185, 96, 0.48);
+  box-shadow: 0 12px 24px rgba(241, 185, 96, 0.18);
 }
 
 .button-secondary {
   color: var(--text-primary);
-  background: var(--card-elevated);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .button-ghost {
-  color: #ffd6d6;
+  color: #ffd3cd;
   background: rgba(239, 68, 68, 0.08);
   border-color: rgba(239, 68, 68, 0.2);
 }
@@ -157,16 +185,16 @@ body {
   padding: 12px 14px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: var(--card-muted);
+  background: rgba(12, 9, 7, 0.44);
   font: inherit;
   color: var(--text-primary);
 }
 
 .field input:focus,
 .field select:focus {
-  outline: 2px solid rgba(34, 197, 94, 0.2);
+  outline: 2px solid rgba(241, 185, 96, 0.18);
   outline-offset: 1px;
-  border-color: rgba(34, 197, 94, 0.42);
+  border-color: rgba(241, 185, 96, 0.4);
 }
 
 .context-box,
@@ -174,7 +202,9 @@ body {
   padding: 18px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--card-elevated);
+  background:
+    radial-gradient(circle at top right, rgba(241, 185, 96, 0.12), transparent 44%),
+    var(--card-elevated);
 }
 
 .context-box {
@@ -184,7 +214,8 @@ body {
 }
 
 .context-box strong {
-  font-size: 1.55rem;
+  font-size: 1.7rem;
+  line-height: 1.05;
 }
 
 .context-label {
@@ -214,7 +245,7 @@ body {
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(--card-muted);
+  background: rgba(12, 9, 7, 0.38);
   color: var(--text-secondary);
   font-size: 0.84rem;
 }
@@ -228,35 +259,78 @@ body {
 
 .student-list {
   display: grid;
-  gap: 14px;
+  gap: 10px;
   min-height: 0;
   padding-right: 6px;
   overflow: auto;
   align-content: start;
 }
 
-.student-card {
-  padding: 18px;
+.list-head,
+.student-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.5fr) minmax(92px, 0.7fr) minmax(180px, 1.1fr) minmax(100px, 0.7fr);
+  gap: 14px;
+  align-items: center;
+}
+
+.list-head {
+  padding: 0 16px 10px;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.student-row {
+  padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: 16px;
-  background: var(--card-muted);
+  background:
+    linear-gradient(90deg, rgba(241, 185, 96, 0.06), transparent 30%),
+    var(--card-muted);
 }
 
-.student-card h4 {
-  margin: 0 0 6px;
-  font-size: 1.1rem;
+.student-primary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.student-card p {
+.student-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(241, 185, 96, 0.12);
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.student-copy {
+  min-width: 0;
+}
+
+.student-copy h4 {
+  margin: 0 0 4px;
+  font-size: 1.02rem;
+}
+
+.student-copy p,
+.track-text,
+.city-text {
   margin: 0;
   color: var(--text-secondary);
 }
 
-.student-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
+.track-text,
+.city-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pill {
@@ -264,10 +338,19 @@ body {
   align-items: center;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(34, 197, 94, 0.08);
-  color: #86efac;
+  width: fit-content;
+  background: rgba(139, 211, 168, 0.08);
+  color: var(--success);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.student-empty {
+  padding: 18px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  color: var(--text-secondary);
+  text-align: center;
 }
 
 .panel-header {
@@ -283,7 +366,7 @@ body {
   padding: 18px;
   border: 1px solid var(--border);
   border-radius: 14px;
-  background: #0c1117;
+  background: #140f0d;
   color: var(--text-primary);
   font-family: var(--mono);
   font-size: 0.9rem;
@@ -312,7 +395,7 @@ code {
 .modal-card::-webkit-scrollbar-thumb {
   border-radius: 999px;
   border: 2px solid transparent;
-  background: rgba(155, 163, 175, 0.28);
+  background: rgba(241, 185, 96, 0.24);
   background-clip: content-box;
 }
 
@@ -345,7 +428,9 @@ code {
   padding: 18px;
   border: 1px solid var(--border);
   border-radius: 20px;
-  background: var(--card);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+    var(--card);
   box-shadow: var(--shadow);
 }
 
@@ -397,6 +482,16 @@ body.modal-open {
     grid-template-columns: 1fr;
   }
 
+  .list-head,
+  .student-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .track-text,
+  .city-text {
+    white-space: normal;
+  }
+
   .toolbar-actions {
     width: 100%;
   }
@@ -424,6 +519,15 @@ body.modal-open {
   .side-panel,
   .data-panel {
     height: 500px;
+  }
+
+  .list-head {
+    display: none;
+  }
+
+  .student-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .toolbar-actions .button,
