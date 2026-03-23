@@ -1,0 +1,18 @@
+{
+  "name": "odee-multi-tenant-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-contained ODEE multi-tenant isolation demo with frontend, backend, and Supabase-ready SQL migrations.",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
