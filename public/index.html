@@ -8,104 +8,130 @@
   </head>
   <body>
     <div class="page-shell">
-      <header class="hero">
-        <div>
-          <p class="eyebrow">ODEE</p>
-          <h1>Multi-tenant isolation demo</h1>
-          <p class="hero-text">Switch tenant. Add a student. Cross-tenant reads stay blocked.</p>
-        </div>
-        <div class="hero-chips">
-          <span class="chip">No .env</span>
-          <span class="chip">Railway ready</span>
-          <span class="chip">Supabase SQL included</span>
-        </div>
-      </header>
-
       <main class="layout">
         <section class="card section-block" id="playground">
+          <div class="toolbar">
+            <label class="field user-field">
+              <span>User</span>
+              <select id="userSelect"></select>
+            </label>
+
+            <div class="toolbar-actions">
+              <button
+                class="button button-primary"
+                type="button"
+                data-modal-target="studentModal"
+              >
+                Add student
+              </button>
+              <button id="attackButton" class="button button-secondary" type="button">
+                Test blocked read
+              </button>
+              <button id="resetButton" class="button button-ghost" type="button">
+                Reset
+              </button>
+              <button class="button button-secondary" type="button" data-modal-target="sqlModal">
+                SQL
+              </button>
+              <button class="button button-secondary" type="button" data-modal-target="apiModal">
+                API
+              </button>
+              <button class="button button-secondary" type="button" data-modal-target="testModal">
+                Test
+              </button>
+            </div>
+          </div>
+
           <div class="playground-grid">
-            <div class="control-panel">
-              <label class="field">
-                <span>User</span>
-                <select id="userSelect"></select>
-              </label>
-
-              <div class="context-box" id="contextBox"></div>
-
-              <form id="studentForm" class="student-form">
-                <h3>Add student</h3>
-                <label class="field">
-                  <span>Name</span>
-                  <input name="name" type="text" placeholder="Student name" required />
-                </label>
-                <label class="field">
-                  <span>Grade</span>
-                  <input name="grade" type="text" placeholder="Class 7" required />
-                </label>
-                <label class="field">
-                  <span>Learning track</span>
-                  <input
-                    name="learningTrack"
-                    type="text"
-                    placeholder="Adaptive Math"
-                    required
-                  />
-                </label>
-                <label class="field">
-                  <span>City</span>
-                  <input name="city" type="text" placeholder="Bengaluru" required />
-                </label>
-                <button class="button button-primary" type="submit">Create student</button>
-              </form>
-
-              <div class="action-row">
-                <button id="attackButton" class="button button-secondary" type="button">
-                  Test blocked read
-                </button>
-                <button id="resetButton" class="button button-ghost" type="button">
-                  Reset
-                </button>
-              </div>
-
-              <pre class="inline-console" id="attackResult">Ready.</pre>
+            <div class="side-panel">
+              <article class="inner-card context-box" id="contextBox"></article>
+              <article class="inner-card status-box">
+                <div class="panel-header">
+                  <h3>Status</h3>
+                </div>
+                <pre class="inline-console" id="attackResult">Ready.</pre>
+              </article>
             </div>
 
-            <div class="data-panel">
+            <article class="inner-card data-panel">
               <div class="panel-header">
                 <h3>Visible students</h3>
               </div>
               <div class="student-list" id="studentList"></div>
-            </div>
+            </article>
           </div>
         </section>
-
-        <section class="card section-block">
-          <ul id="principles" class="principle-list"></ul>
-        </section>
-
-        <section class="content-grid compact-grid">
-          <article class="card section-block code-panel">
-            <div class="panel-header compact-head">
-              <h3>SQL migration</h3>
-            </div>
-            <pre id="sqlMigration" class="code-block"></pre>
-          </article>
-
-          <article class="card section-block code-panel">
-            <div class="panel-header compact-head">
-              <h3>API route</h3>
-            </div>
-            <pre id="apiChanges" class="code-block compact"></pre>
-          </article>
-
-          <article class="card section-block code-panel">
-            <div class="panel-header compact-head">
-              <h3>Test query</h3>
-            </div>
-            <pre id="testQueries" class="code-block compact"></pre>
-          </article>
-        </section>
       </main>
+    </div>
+
+    <div class="modal-shell hidden" id="studentModal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Add student</h3>
+          <button class="icon-button" type="button" data-close-modal aria-label="Close modal">
+            ×
+          </button>
+        </div>
+        <form id="studentForm" class="student-form">
+          <label class="field">
+            <span>Name</span>
+            <input name="name" type="text" placeholder="Student name" required />
+          </label>
+          <label class="field">
+            <span>Grade</span>
+            <input name="grade" type="text" placeholder="Class 7" required />
+          </label>
+          <label class="field">
+            <span>Learning track</span>
+            <input name="learningTrack" type="text" placeholder="Adaptive Math" required />
+          </label>
+          <label class="field">
+            <span>City</span>
+            <input name="city" type="text" placeholder="Bengaluru" required />
+          </label>
+          <button class="button button-primary" type="submit">Create student</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-shell hidden" id="sqlModal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card modal-card-wide">
+        <div class="modal-header">
+          <h3>SQL migration</h3>
+          <button class="icon-button" type="button" data-close-modal aria-label="Close modal">
+            ×
+          </button>
+        </div>
+        <pre id="sqlMigration" class="code-block modal-code"></pre>
+      </div>
+    </div>
+
+    <div class="modal-shell hidden" id="apiModal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card modal-card-wide">
+        <div class="modal-header">
+          <h3>API route</h3>
+          <button class="icon-button" type="button" data-close-modal aria-label="Close modal">
+            ×
+          </button>
+        </div>
+        <pre id="apiChanges" class="code-block modal-code"></pre>
+      </div>
+    </div>
+
+    <div class="modal-shell hidden" id="testModal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card modal-card-wide">
+        <div class="modal-header">
+          <h3>Test query</h3>
+          <button class="icon-button" type="button" data-close-modal aria-label="Close modal">
+            ×
+          </button>
+        </div>
+        <pre id="testQueries" class="code-block modal-code"></pre>
+      </div>
     </div>
 
     <script type="module" src="/app.js"></script>

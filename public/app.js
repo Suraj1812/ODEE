@@ -13,14 +13,16 @@ const elements = {
   userSelect: document.querySelector("#userSelect"),
   contextBox: document.querySelector("#contextBox"),
   studentList: document.querySelector("#studentList"),
-  principles: document.querySelector("#principles"),
   sqlMigration: document.querySelector("#sqlMigration"),
   apiChanges: document.querySelector("#apiChanges"),
   testQueries: document.querySelector("#testQueries"),
   studentForm: document.querySelector("#studentForm"),
   resetButton: document.querySelector("#resetButton"),
   attackButton: document.querySelector("#attackButton"),
-  attackResult: document.querySelector("#attackResult")
+  attackResult: document.querySelector("#attackResult"),
+  modalTriggers: document.querySelectorAll("[data-modal-target]"),
+  modalClosers: document.querySelectorAll("[data-close-modal]"),
+  modals: document.querySelectorAll(".modal-shell")
 };
 
 function activeUser() {
@@ -56,15 +58,6 @@ async function api(path, options = {}) {
   return payload;
 }
 
-function renderList(target, items) {
-  target.innerHTML = "";
-  items.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    target.appendChild(li);
-  });
-}
-
 function renderCode(target, value) {
   target.textContent = value;
 }
@@ -88,11 +81,12 @@ function renderUsers() {
 
 function renderContext(context) {
   elements.contextBox.innerHTML = `
+    <span class="context-label">Active tenant</span>
     <strong>${context.user.tenantName}</strong>
-    <span>${context.user.name} · ${context.user.role}</span>
+    <span class="context-subtitle">${context.user.name} · ${context.user.role}</span>
     <div class="context-meta">
-      <span class="mini-chip">${context.user.tenantId}</span>
-      <span class="mini-chip">${context.visibleStudents} visible</span>
+      <span class="mini-chip">Tenant: ${context.user.tenantId}</span>
+      <span class="mini-chip">Students: ${context.visibleStudents}</span>
     </div>
   `;
 }
@@ -122,14 +116,35 @@ function renderStudents(students) {
 }
 
 function renderSolution(solution) {
-  renderList(elements.principles, [
-    "Rows are scoped by tenant_id.",
-    "The server stamps tenant_id on writes.",
-    "RLS blocks cross-tenant reads."
-  ]);
   renderCode(elements.sqlMigration, solution.sqlMigration);
   renderCode(elements.apiChanges, solution.apiChanges);
   renderCode(elements.testQueries, solution.testQueries);
+}
+
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeModal(modal) {
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden", "true");
+
+  const openModalExists = Array.from(elements.modals).some(
+    (item) => !item.classList.contains("hidden")
+  );
+
+  if (!openModalExists) {
+    document.body.classList.remove("modal-open");
+  }
+}
+
+function closeAllModals() {
+  elements.modals.forEach((modal) => closeModal(modal));
 }
 
 async function refreshDemo() {
@@ -197,6 +212,8 @@ elements.studentForm.addEventListener("submit", async (event) => {
   });
 
   elements.studentForm.reset();
+  closeAllModals();
+  elements.attackResult.textContent = "Student created.";
   await refreshDemo();
 });
 
@@ -209,6 +226,29 @@ elements.resetButton.addEventListener("click", async () => {
 
 elements.attackButton.addEventListener("click", async () => {
   await runAttack();
+});
+
+elements.modalTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", () => {
+    openModal(trigger.dataset.modalTarget);
+  });
+});
+
+elements.modalClosers.forEach((closer) => {
+  closer.addEventListener("click", () => {
+    const modal = closer.closest(".modal-shell");
+    if (modal) {
+      closeModal(modal);
+    } else {
+      closeAllModals();
+    }
+  });
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeAllModals();
+  }
 });
 
 bootstrap().catch((error) => {
