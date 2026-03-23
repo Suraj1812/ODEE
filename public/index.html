@@ -9,46 +9,24 @@
   <body>
     <div class="page-shell">
       <header class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">ODEE | White-Label API Architecture Demo</p>
-          <h1>Multi-tenant isolation, explained and running.</h1>
-          <p class="hero-text">
-            This frontend is connected to a live backend demo that enforces
-            tenant separation the same way the Supabase migration does: the
-            active user can only see rows from their own tenant.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#playground">Try the demo</a>
-            <a class="button button-secondary" href="#migration">View SQL migration</a>
-          </div>
+        <div>
+          <p class="eyebrow">ODEE</p>
+          <h1>Multi-tenant isolation demo</h1>
+          <p class="hero-text">Switch tenant. Add a student. Cross-tenant reads stay blocked.</p>
         </div>
-        <aside class="hero-panel">
-          <div class="metric">
-            <span class="metric-label">Deployment shape</span>
-            <strong>One Node service</strong>
-          </div>
-          <div class="metric">
-            <span class="metric-label">Local setup</span>
-            <strong>No .env file</strong>
-          </div>
-          <div class="metric">
-            <span class="metric-label">Railway startup</span>
-            <strong><code>npm start</code></strong>
-          </div>
-        </aside>
+        <div class="hero-chips">
+          <span class="chip">No .env</span>
+          <span class="chip">Railway ready</span>
+          <span class="chip">Supabase SQL included</span>
+        </div>
       </header>
 
       <main class="layout">
         <section class="card section-block" id="playground">
-          <div class="section-heading">
-            <p class="section-kicker">Live demo</p>
-            <h2>Tenant isolation playground</h2>
-          </div>
-
           <div class="playground-grid">
             <div class="control-panel">
               <label class="field">
-                <span>Active demo user</span>
+                <span>User</span>
                 <select id="userSelect"></select>
               </label>
 
@@ -56,10 +34,6 @@
 
               <form id="studentForm" class="student-form">
                 <h3>Add student</h3>
-                <p class="helper">
-                  The backend ignores any client tenant input and stamps the
-                  active tenant server-side.
-                </p>
                 <label class="field">
                   <span>Name</span>
                   <input name="name" type="text" placeholder="Student name" required />
@@ -84,81 +58,46 @@
                 <button class="button button-primary" type="submit">Create student</button>
               </form>
 
-              <div class="attack-box">
-                <h3>Cross-tenant lookup test</h3>
-                <p class="helper">
-                  This tries to fetch a student from the other tenant. The
-                  correct result is a hidden row.
-                </p>
+              <div class="action-row">
                 <button id="attackButton" class="button button-secondary" type="button">
-                  Attempt blocked read
+                  Test blocked read
                 </button>
-                <pre class="inline-console" id="attackResult">Waiting for test...</pre>
+                <button id="resetButton" class="button button-ghost" type="button">
+                  Reset
+                </button>
               </div>
+
+              <pre class="inline-console" id="attackResult">Ready.</pre>
             </div>
 
             <div class="data-panel">
               <div class="panel-header">
                 <h3>Visible students</h3>
-                <button id="resetButton" class="button button-ghost" type="button">
-                  Reset demo data
-                </button>
               </div>
               <div class="student-list" id="studentList"></div>
             </div>
           </div>
         </section>
 
-        <section class="content-grid">
-          <article class="card section-block">
-            <div class="section-heading">
-              <p class="section-kicker">Execution</p>
-              <h2>Task breakdown</h2>
-            </div>
-            <ul id="taskBreakdown" class="bullet-list"></ul>
-          </article>
-
-          <article class="card section-block">
-            <div class="section-heading">
-              <p class="section-kicker">Data model</p>
-              <h2>Schema changes</h2>
-            </div>
-            <ul id="schemaChanges" class="bullet-list"></ul>
-          </article>
-        </section>
-
-        <section class="card section-block" id="migration">
-          <div class="section-heading">
-            <p class="section-kicker">Database</p>
-            <h2>Supabase SQL migration</h2>
-          </div>
-          <pre id="sqlMigration" class="code-block"></pre>
-        </section>
-
-        <section class="content-grid">
-          <article class="card section-block">
-            <div class="section-heading">
-              <p class="section-kicker">Backend</p>
-              <h2>API example</h2>
-            </div>
-            <pre id="apiChanges" class="code-block compact"></pre>
-          </article>
-
-          <article class="card section-block">
-            <div class="section-heading">
-              <p class="section-kicker">Verification</p>
-              <h2>Test queries</h2>
-            </div>
-            <pre id="testQueries" class="code-block compact"></pre>
-          </article>
-        </section>
-
         <section class="card section-block">
-          <div class="section-heading">
-            <p class="section-kicker">CPO summary</p>
-            <h2>5-line reporting summary</h2>
-          </div>
-          <ol id="summary" class="summary-list"></ol>
+          <ul id="principles" class="principle-list"></ul>
+        </section>
+
+        <section class="content-grid compact-grid">
+          <details class="card section-block details-card" open>
+            <summary>SQL migration</summary>
+            <pre id="sqlMigration" class="code-block"></pre>
+          </details>
+
+          <details class="card section-block details-card">
+            <summary>API route</summary>
+            <pre id="apiChanges" class="code-block compact"></pre>
+          </details>
+
+          <details class="card section-block details-card">
+            <summary>Test query</summary>
+            <pre id="testQueries" class="code-block compact"></pre>
+          </details>
         </section>
       </main>
     </div>

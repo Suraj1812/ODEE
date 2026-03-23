@@ -57,10 +57,11 @@ body::before {
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  gap: 22px;
-  padding: 34px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px 30px;
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
   background:
@@ -90,31 +91,24 @@ body::before {
 
 .hero h1 {
   max-width: 12ch;
-  font-size: clamp(2.7rem, 6vw, 5rem);
-  line-height: 0.94;
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  line-height: 0.96;
 }
 
 .hero-text {
-  max-width: 60ch;
-  margin: 18px 0 0;
+  max-width: 44ch;
+  margin: 12px 0 0;
   color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.7;
+  font-size: 0.98rem;
+  line-height: 1.55;
 }
 
-.hero-actions {
+.hero-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 24px;
 }
 
-.hero-panel {
-  display: grid;
-  gap: 14px;
-}
-
-.metric,
 .card {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
@@ -122,18 +116,17 @@ body::before {
   box-shadow: var(--shadow);
 }
 
-.metric {
-  padding: 18px 20px;
-  background:
-    linear-gradient(180deg, rgba(14, 95, 99, 0.05), rgba(255, 251, 245, 0.92)),
-    var(--surface-strong);
-}
-
-.metric-label {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--muted);
-  font-size: 0.86rem;
+.chip,
+.mini-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(14, 95, 99, 0.08);
+  border: 1px solid rgba(14, 95, 99, 0.12);
+  color: var(--teal-deep);
+  font-size: 0.84rem;
+  font-weight: 700;
 }
 
 .layout {
@@ -146,17 +139,9 @@ body::before {
   padding: 28px;
 }
 
-.section-heading {
-  margin-bottom: 18px;
-}
-
-.section-heading h2 {
-  font-size: clamp(1.7rem, 3vw, 2.3rem);
-}
-
 .content-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
 }
 
@@ -170,6 +155,11 @@ body::before {
 .data-panel {
   display: grid;
   gap: 16px;
+}
+
+.action-row {
+  display: flex;
+  gap: 12px;
 }
 
 .button {
@@ -252,21 +242,20 @@ body::before {
 
 .context-box {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .context-box strong {
   font-size: 1.12rem;
 }
 
-.helper {
-  margin: 6px 0 0;
-  color: var(--muted);
-  line-height: 1.6;
+.context-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .student-form h3,
-.attack-box h3,
 .panel-header h3 {
   margin: 0;
 }
@@ -315,18 +304,21 @@ body::before {
   gap: 12px;
 }
 
-.bullet-list,
-.summary-list {
-  margin: 0;
-  padding-left: 20px;
+.principle-list {
   display: grid;
-  gap: 12px;
-  line-height: 1.65;
-  color: var(--muted);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.summary-list {
-  color: var(--text);
+.principle-list li {
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
 }
 
 .code-block,
@@ -349,17 +341,40 @@ body::before {
 }
 
 .inline-console {
-  min-height: 110px;
+  min-height: 72px;
 }
 
 code {
   font-family: var(--mono);
 }
 
+.details-card summary {
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+}
+
+.details-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.details-card[open] summary {
+  margin-bottom: 16px;
+}
+
 @media (max-width: 980px) {
   .hero,
-  .content-grid,
   .playground-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .content-grid,
+  .principle-list {
     grid-template-columns: 1fr;
   }
 
@@ -381,6 +396,7 @@ code {
     font-size: clamp(2.2rem, 12vw, 3.4rem);
   }
 
+  .action-row,
   .panel-header {
     align-items: stretch;
     flex-direction: column;

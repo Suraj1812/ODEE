@@ -13,12 +13,10 @@ const elements = {
   userSelect: document.querySelector("#userSelect"),
   contextBox: document.querySelector("#contextBox"),
   studentList: document.querySelector("#studentList"),
-  taskBreakdown: document.querySelector("#taskBreakdown"),
-  schemaChanges: document.querySelector("#schemaChanges"),
+  principles: document.querySelector("#principles"),
   sqlMigration: document.querySelector("#sqlMigration"),
   apiChanges: document.querySelector("#apiChanges"),
   testQueries: document.querySelector("#testQueries"),
-  summary: document.querySelector("#summary"),
   studentForm: document.querySelector("#studentForm"),
   resetButton: document.querySelector("#resetButton"),
   attackButton: document.querySelector("#attackButton"),
@@ -90,10 +88,12 @@ function renderUsers() {
 
 function renderContext(context) {
   elements.contextBox.innerHTML = `
-    <strong>${context.user.name}</strong>
-    <span>${context.user.tenantName} · ${context.user.role}</span>
-    <span>Tenant ID: <code>${context.user.tenantId}</code></span>
-    <span>Visible students: <strong>${context.visibleStudents}</strong></span>
+    <strong>${context.user.tenantName}</strong>
+    <span>${context.user.name} · ${context.user.role}</span>
+    <div class="context-meta">
+      <span class="mini-chip">${context.user.tenantId}</span>
+      <span class="mini-chip">${context.visibleStudents} visible</span>
+    </div>
   `;
 }
 
@@ -101,7 +101,7 @@ function renderStudents(students) {
   elements.studentList.innerHTML = "";
 
   if (students.length === 0) {
-    elements.studentList.innerHTML = `<div class="student-card"><p>No students visible for this tenant.</p></div>`;
+    elements.studentList.innerHTML = `<div class="student-card"><p>No students in this tenant.</p></div>`;
     return;
   }
 
@@ -122,9 +122,11 @@ function renderStudents(students) {
 }
 
 function renderSolution(solution) {
-  renderList(elements.taskBreakdown, solution.taskBreakdown);
-  renderList(elements.schemaChanges, solution.schemaChanges);
-  renderList(elements.summary, solution.summary);
+  renderList(elements.principles, [
+    "Rows are scoped by tenant_id.",
+    "The server stamps tenant_id on writes.",
+    "RLS blocks cross-tenant reads."
+  ]);
   renderCode(elements.sqlMigration, solution.sqlMigration);
   renderCode(elements.apiChanges, solution.apiChanges);
   renderCode(elements.testQueries, solution.testQueries);
@@ -138,7 +140,7 @@ async function refreshDemo() {
 
   renderContext(context);
   renderStudents(students);
-  elements.attackResult.textContent = "Waiting for test...";
+  elements.attackResult.textContent = "Ready.";
 }
 
 async function runAttack() {
@@ -149,7 +151,7 @@ async function runAttack() {
     await api(`/api/demo/students/${targetId}`);
     elements.attackResult.textContent = `Unexpectedly received access to ${targetId}.`;
   } catch (error) {
-    elements.attackResult.textContent = `Blocked as expected for ${targetId}: ${error.message}`;
+    elements.attackResult.textContent = `Blocked: ${targetId} -> ${error.message}`;
   }
 }
 
