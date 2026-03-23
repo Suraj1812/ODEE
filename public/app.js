@@ -62,6 +62,12 @@ function renderCode(target, value) {
   target.textContent = value;
 }
 
+function setStatus(message, tone = "neutral") {
+  elements.attackResult.textContent = message;
+  elements.attackResult.classList.remove("status-neutral", "status-success", "status-error");
+  elements.attackResult.classList.add(`status-${tone}`);
+}
+
 function renderUsers() {
   elements.userSelect.innerHTML = "";
 
@@ -165,7 +171,7 @@ async function refreshDemo() {
 
   renderContext(context);
   renderStudents(students);
-  elements.attackResult.textContent = "Ready.";
+  setStatus("Ready.", "neutral");
 }
 
 async function runAttack() {
@@ -174,9 +180,14 @@ async function runAttack() {
 
   try {
     await api(`/api/demo/students/${targetId}`);
-    elements.attackResult.textContent = `Unexpectedly received access to ${targetId}.`;
+    setStatus("Cross-tenant read unexpectedly succeeded. Isolation failed.", "error");
   } catch (error) {
-    elements.attackResult.textContent = `Blocked: ${targetId} -> ${error.message}`;
+    if (error.message === "not_found") {
+      setStatus("Blocked successfully. Cross-tenant student access was denied.", "success");
+      return;
+    }
+
+    setStatus(`Blocked request: ${error.message}`, "success");
   }
 }
 
@@ -223,7 +234,7 @@ elements.studentForm.addEventListener("submit", async (event) => {
 
   elements.studentForm.reset();
   closeAllModals();
-  elements.attackResult.textContent = "Student created.";
+  setStatus("Student created.", "success");
   await refreshDemo();
 });
 

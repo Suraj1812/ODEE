@@ -380,6 +380,22 @@ body::before {
   height: auto;
 }
 
+.status-neutral {
+  color: var(--text-primary);
+}
+
+.status-success {
+  color: var(--success);
+  background: #f3fbf5;
+  border-color: #cde7d3;
+}
+
+.status-error {
+  color: var(--danger);
+  background: #fff4f4;
+  border-color: #f2c7c7;
+}
+
 code {
   font-family: var(--mono);
 }
