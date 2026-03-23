@@ -71,6 +71,7 @@ body::before {
   display: grid;
   grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
   gap: 16px;
+  align-items: start;
 }
 
 .toolbar {
@@ -102,17 +103,19 @@ body::before {
 .data-panel {
   display: grid;
   gap: 16px;
-  height: var(--panel-height);
   min-height: 0;
 }
 
 .side-panel {
-  grid-template-rows: 220px minmax(0, 1fr);
+  grid-template-rows: minmax(220px, auto) auto;
+  align-content: start;
+  height: auto;
 }
 
 .data-panel {
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
   padding: 18px;
+  height: var(--panel-height);
 }
 
 .inner-card {
@@ -247,7 +250,7 @@ body::before {
 
 .status-box {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
   gap: 14px;
   padding: 18px;
 }
@@ -256,6 +259,7 @@ body::before {
   display: grid;
   gap: 10px;
   min-height: 0;
+  margin-top: 0;
   padding-right: 6px;
   overflow: auto;
   align-content: start;
@@ -270,7 +274,7 @@ body::before {
 }
 
 .list-head {
-  padding: 0 16px 10px;
+  padding: 4px 16px 8px;
   color: var(--text-secondary);
   font-size: 0.78rem;
   letter-spacing: 0.12em;
@@ -372,7 +376,8 @@ body::before {
 
 .inline-console {
   min-height: 86px;
-  height: 100%;
+  max-height: 160px;
+  height: auto;
 }
 
 code {
@@ -495,6 +500,10 @@ body.modal-open {
 
   .side-panel,
   .data-panel {
+    height: auto;
+  }
+
+  .data-panel {
     height: clamp(420px, 60vh, 560px);
   }
 }
@@ -509,11 +518,6 @@ body.modal-open {
     padding: 14px;
   }
 
-  .side-panel,
-  .data-panel {
-    height: 500px;
-  }
-
   .list-head {
     display: none;
   }
@@ -521,6 +525,10 @@ body.modal-open {
   .student-row {
     grid-template-columns: 1fr;
     gap: 10px;
+  }
+
+  .data-panel {
+    height: 500px;
   }
 
   .toolbar-actions .button,
